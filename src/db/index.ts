@@ -1,20 +1,49 @@
-import mongoose, { Connection } from "mongoose";
+import { Model, Document, Types } from 'mongoose';
+import mongoose from 'mongoose';
 
-class mongo {
-    constructor() {}
-
-    async connect(): Promise<Connection> {
-        const uri = process.env.MONGO_URL || "";
-        try {
-            console.log("Connected to MongoDB");
-            const options = {}; // Add any required options
-            await mongoose.connect(uri, options);
-            return mongoose.connection;
-        } catch (error) {
-            console.log(error);
-            throw error; // Optional: Rethrow the error for the caller to handle
-        }
-    }
+interface ITask extends Document {
+  id: string;
+  title: string;
+  description: string;
+  // Add more properties as needed
 }
 
-export default mongo;
+const TaskSchema = new mongoose.Schema<ITask>({
+  id: { type: String, required: true },
+  title: { type: String, required: true },
+  description: { type: String, required: true },
+  // Define more properties here
+});
+
+const TaskModel: Model<ITask> = mongoose.model<ITask>('Task', TaskSchema);
+
+class Tasks {
+  constructor() {
+    this.connectToDatabase();
+  }
+
+  async connectToDatabase() {
+    const uri = process.env.MONGO_URL || '';
+    try {
+      console.log('Connected to MongoDB');
+      const options = {}; // Add any required options
+      await mongoose.connect(uri, options);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  async getTasks() {
+    const tasks = await TaskModel.find({}).exec();
+    return tasks;
+  }
+
+  async create(task: ITask) {
+    const result = await TaskModel.create(task);
+    console.log(result);
+    return 'worked';
+  }
+}
+
+export default Tasks;

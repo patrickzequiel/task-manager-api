@@ -1,0 +1,12 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "shell",
+			"command": "yarn start:dev",
+			"problemMatcher": [],
+			"label": "Yarn: start:dev",
+			"detail": "npx nodemon"
+		}
+	]
+}
