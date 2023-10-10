@@ -26,8 +26,6 @@ router.delete("/:id", async (req: any, res: any) => {
   res.json(result);
 });
 
-// Assuming you have already defined your TaskModel and connected to your database
-
 router.put("/:id", async (req: any, res: any) => {
   const tasks = await connectDB();
   try {

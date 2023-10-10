@@ -13,7 +13,7 @@ const TaskSchema = new mongoose.Schema<ITask>(
     title: { type: String, required: true },
     description: { type: String, required: true },
   },
-  { collection: 'tasks', versionKey: false } // Coloque todas as opções no mesmo objeto
+  { collection: 'tasks', versionKey: false } 
 );
 
 const TaskModel: Model<ITask> = mongoose.model<ITask>('tasks', TaskSchema);
@@ -27,7 +27,7 @@ class Tasks {
     const uri = process.env.MONGO_URL || '';
     try {
       console.log('Connected to MongoDB');
-      const options = {}; // Add any required options
+      const options = {};
       await mongoose.connect(uri, options);
     } catch (error) {
       console.log(error);
@@ -47,8 +47,8 @@ class Tasks {
   }
 
   async updateOne(req: any) {
-    const taskId = req.params.id; // Access the id from the URL parameters
-    const update: any = {}; // Object to store the fields to update
+    const taskId = req.params.id; 
+    const update: any = {}; 
 
     if (req.body.title) {
       update.title = req.body.title;
@@ -59,9 +59,9 @@ class Tasks {
     }
 
     const updatedTask = await TaskModel.findOneAndUpdate(
-      { _id: taskId }, // Filter by id
-      { $set: update }, // Fields to update
-      { new: true } // Return the updated document
+      { _id: taskId }, 
+      { $set: update }, 
+      { new: true } 
     );
 
     return updatedTask;
