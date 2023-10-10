@@ -1,8 +1,8 @@
 Arguments: 
-  /Users/patrickcruz/.nvm/versions/node/v16.8.0/bin/node /usr/local/bin/yarn install
+  /Users/patrickcruz/.nvm/versions/node/v16.8.0/bin/node /usr/local/bin/yarn add eslint eslint-config-prettier prettier –-save-dev
 
 PATH: 
-  /Users/patrickcruz/.nvm/versions/node/v16.8.0/bin:/usr/local/opt/curl-openssl/bin:/usr/local/opt/node@14/bin:/Library/Frameworks/Python.framework/Versions/3.9/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/Apple/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Users/patrickcruz/.nvm/versions/node/v16.8.0/bin:/usr/local/opt/curl-openssl/bin:/usr/local/opt/node@14/bin:/Users/patrickcruz/.zinit/polaris/sbin:/Users/patrickcruz/.zinit/polaris/bin:/Library/Frameworks/Python.framework/Versions/3.9/bin:/Users/patrickcruz/Desktop/BIGDATA/spark-3.1.1-bin-hadoop3.2/bin:/Users/patrickcruz/Android/Sdk/emulator:/Users/patrickcruz/Android/Sdk/tools:/Users/patrickcruz/Android/Sdk/tools/bin:/Users/patrickcruz/Android/Sdk/platform-tools:/Users/patrickcruz/development/flutter/bin:/Users/patrickcruz/Desktop/BIGDATA/spark-3.1.1-bin-hadoop3.2/bin:/Users/patrickcruz/Android/Sdk/emulator:/Users/patrickcruz/Android/Sdk/tools:/Users/patrickcruz/Android/Sdk/tools/bin:/Users/patrickcruz/Android/Sdk/platform-tools:/Users/patrickcruz/development/flutter/bin
+  /Users/patrickcruz/.nvm/versions/node/v16.8.0/bin:/usr/local/opt/curl-openssl/bin:/usr/local/opt/node@14/bin:/Users/patrickcruz/development/flutter/bin/cache/dart-sdk/bin/:/Library/Frameworks/Python.framework/Versions/3.9/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/patrickcruz/development/flutter/bin/cache/dart-sdk/bin/:/Users/patrickcruz/.nvm/versions/node/v16.8.0/bin:/usr/local/opt/curl-openssl/bin:/usr/local/opt/node@14/bin:/Users/patrickcruz/.zinit/polaris/sbin:/Users/patrickcruz/.zinit/polaris/bin:/Library/Frameworks/Python.framework/Versions/3.9/bin:/Users/patrickcruz/Desktop/BIGDATA/spark-3.1.1-bin-hadoop3.2/bin:/Users/patrickcruz/Android/Sdk/emulator:/Users/patrickcruz/Android/Sdk/tools:/Users/patrickcruz/Android/Sdk/tools/bin:/Users/patrickcruz/Android/Sdk/platform-tools:/Users/patrickcruz/development/flutter/bin:/Users/patrickcruz/Desktop/BIGDATA/spark-3.1.1-bin-hadoop3.2/bin:/Users/patrickcruz/Android/Sdk/emulator:/Users/patrickcruz/Android/Sdk/tools:/Users/patrickcruz/Android/Sdk/tools/bin:/Users/patrickcruz/Android/Sdk/platform-tools:/Users/patrickcruz/development/flutter/bin
 
 Yarn version: 
   1.22.17
@@ -14,12 +14,16 @@ Platform:
   darwin x64
 
 Trace: 
-  SyntaxError: /Users/patrickcruz/Desktop/CODES/task-manager-api/package.json: Unexpected string in JSON at position 237
-      at JSON.parse (<anonymous>)
-      at /usr/local/lib/node_modules/yarn/lib/cli.js:1625:59
-      at Generator.next (<anonymous>)
-      at step (/usr/local/lib/node_modules/yarn/lib/cli.js:310:30)
-      at /usr/local/lib/node_modules/yarn/lib/cli.js:321:13
+  TypeError [ERR_UNESCAPED_CHARACTERS]: https://registry.yarnpkg.com/–-save-dev: Request path contains unescaped characters
+      at new NodeError (node:internal/errors:371:5)
+      at new ClientRequest (node:_http_client:154:13)
+      at Object.request (node:https:353:10)
+      at Request.module.exports.Request.start (/usr/local/lib/node_modules/yarn/lib/cli.js:141445:32)
+      at Request.module.exports.Request.end (/usr/local/lib/node_modules/yarn/lib/cli.js:142204:10)
+      at end (/usr/local/lib/node_modules/yarn/lib/cli.js:141258:14)
+      at Immediate.<anonymous> (/usr/local/lib/node_modules/yarn/lib/cli.js:141272:7)
+      at processImmediate (node:internal/timers:464:21)
+      at process.callbackTrampoline (node:internal/async_hooks:130:17)
 
 npm manifest: 
   {
@@ -28,7 +32,6 @@ npm manifest:
     "main": "dist/index.js",
     "repository": "https://github.com/patrickzequiel/task-manager-api.git",
     "author": "Patrick Cruz <patrickezequielscruz@gmail.com>",
-    "type": "module"
     "license": "MIT",
     "scripts": {
       "start:dev": "npx nodemon",
@@ -39,9 +42,8 @@ npm manifest:
       "body-parser": "^1.20.2",
       "dotenv": "^16.3.1",
       "express": "^4.18.2",
-      "graphql": "^16.8.1",
-      "install": "^0.13.0",
-      "mongoose": "^7.5.2"
+      "mongodb": "^5.7.0",
+      "mongoose": "^7.4.3"
     },
     "devDependencies": {
       "@types/express": "^4.17.17",

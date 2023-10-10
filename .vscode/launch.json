@@ -5,9 +5,7 @@
             "type": "node",
             "request": "launch",
             "name": "Iniciar o Programa",
-            "skipFiles": [
-                "<node_internals>/**"
-            ],
+            "skipFiles": ["<node_internals>/**"],
             "program": "${workspaceFolder}/dist/index.js",
             "preLaunchTask": "yarn start:dev"
         }
