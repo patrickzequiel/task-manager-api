@@ -26,7 +26,11 @@ class Tasks {
     async connectToDatabase() {
         const uri = process.env.MONGO_URL || ''
         try {
-            const options = {}
+            const options = {
+                // Other connection options...
+                bufferCommands: false, // Set to false to disable command buffering
+                bufferTimeoutMS: 50000, // Set the desired timeout value in milliseconds
+            };
             await mongoose.connect(uri, options)
         } catch (error) {
             console.log(error)
