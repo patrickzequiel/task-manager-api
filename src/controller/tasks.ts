@@ -24,15 +24,18 @@ class Tasks {
     }
 
     async connectToDatabase() {
-        const uri = process.env.MONGO_URL || ''
+        const uri = process.env.MONGO_URL || '';
         try {
-            const options = {};
-            await mongoose.connect(uri, options)
+          const options: any = {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+          };
+          await mongoose.connect(uri, options);
         } catch (error) {
-            console.log(error)
-            throw error
+          console.log(error);
+          throw error;
         }
-    }
+      }
 
     async getTasks() {
         try {
