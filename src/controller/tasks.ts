@@ -26,11 +26,7 @@ class Tasks {
     async connectToDatabase() {
         const uri = process.env.MONGO_URL || ''
         try {
-            const options = {
-                // Other connection options...
-                poolSize: 10,       // Set the maximum number of connections in the pool
-                maxPoolSize: 10,    // Set the maximum number of connections in the pool
-            };
+            const options = {};
             await mongoose.connect(uri, options)
         } catch (error) {
             console.log(error)
