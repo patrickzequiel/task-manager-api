@@ -11,6 +11,8 @@ const connectDB = async () => {
 
 router.get('/', async (req: any, res: any) => {
     const tasks = await connectDB()
+    console.log(`connection made`);
+    console.log(`start getTasks`);
     return res.json(await tasks.getTasks())
 })
 

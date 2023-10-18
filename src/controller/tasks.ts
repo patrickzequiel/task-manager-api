@@ -26,7 +26,6 @@ class Tasks {
     async connectToDatabase() {
         const uri = process.env.MONGO_URL || ''
         try {
-            console.log('Connected to MongoDB')
             const options = {}
             await mongoose.connect(uri, options)
         } catch (error) {
@@ -37,6 +36,7 @@ class Tasks {
 
     async getTasks() {
         const tasks = await TaskModel.find({}).lean().exec()
+        console.log(`value of tasks `, tasks);
         return tasks
     }
 

@@ -13,7 +13,6 @@ class Tasks {
     async connectToDatabase() {
         const uri = process.env.MONGO_URL || ''
         try {
-            console.log('Connected to MongoDB')
             const options = {} // Add any required options
             await mongoose.connect(uri, options)
         } catch (error) {
