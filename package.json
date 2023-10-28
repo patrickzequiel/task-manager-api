@@ -1,6 +1,6 @@
 {
     "name": "task-manager-api",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "main": "dist/server.js",
     "repository": "https://github.com/patrickzequiel/task-manager-api.git",
     "author": "Patrick Cruz <patrickezequielscruz@gmail.com>",
