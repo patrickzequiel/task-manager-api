@@ -1,0 +1,466 @@
+openapi: 3.0.3
+info:
+  title: Task Manager API
+  description: |
+    Production-ready RESTful API for managing tasks with full CRUD operations.
+
+    Built with Node.js, Express, TypeScript, and MongoDB following clean architecture principles.
+
+    ## Features
+    - Clean layered architecture
+    - TypeScript type safety
+    - Zod request validation
+    - Winston logging
+    - Helmet security
+    - Error handling
+    - Graceful shutdown
+
+    ## Base URL
+    `http://localhost:3000/api`
+  version: 1.0.0
+  contact:
+    name: Patrick Cruz
+    email: patrickezequielscruz@gmail.com
+  license:
+    name: MIT
+
+servers:
+  - url: http://localhost:3000/api
+    description: Development server
+  - url: https://your-domain.com/api
+    description: Production server
+
+tags:
+  - name: Health
+    description: Health check and API information
+  - name: Tasks
+    description: Task management operations
+
+paths:
+  /:
+    get:
+      tags:
+        - Health
+      summary: Get API information
+      description: Returns API metadata and available endpoints
+      operationId: getApiInfo
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Task Manager API
+                  version:
+                    type: string
+                    example: 1.0.0
+                  endpoints:
+                    type: object
+                    properties:
+                      tasks:
+                        type: string
+                        example: /api/v1/tasks
+                      health:
+                        type: string
+                        example: /health
+
+  /health:
+    get:
+      tags:
+        - Health
+      summary: Health check
+      description: Check if the API is running and healthy
+      operationId: healthCheck
+      responses:
+        '200':
+          description: API is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  status:
+                    type: string
+                    example: UP
+                  timestamp:
+                    type: string
+                    format: date-time
+                    example: 2024-01-15T10:30:00.000Z
+                  environment:
+                    type: string
+                    example: development
+
+  /tasks:
+    get:
+      tags:
+        - Tasks
+      summary: Get all tasks
+      description: Retrieve all tasks sorted by creation date (newest first)
+      operationId: getAllTasks
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Task'
+                  count:
+                    type: integer
+                    example: 5
+
+    post:
+      tags:
+        - Tasks
+      summary: Create a new task
+      description: Create a new task with title, description, and optional status
+      operationId: createTask
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateTaskRequest'
+            examples:
+              full:
+                summary: Full task creation
+                value:
+                  title: Complete project documentation
+                  description: Write comprehensive README and API documentation
+                  status: TODO
+              minimal:
+                summary: Minimal task (status defaults to TODO)
+                value:
+                  title: Quick task
+                  description: This is a minimal task
+      responses:
+        '201':
+          description: Task created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/Task'
+                  message:
+                    type: string
+                    example: Task created successfully
+        '400':
+          $ref: '#/components/responses/ValidationError'
+
+  /tasks/stats:
+    get:
+      tags:
+        - Tasks
+      summary: Get task statistics
+      description: Get aggregated statistics for all tasks
+      operationId: getTaskStats
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    type: object
+                    properties:
+                      total:
+                        type: integer
+                        example: 10
+                      todo:
+                        type: integer
+                        example: 4
+                      inProgress:
+                        type: integer
+                        example: 3
+                      completed:
+                        type: integer
+                        example: 3
+
+  /tasks/{id}:
+    get:
+      tags:
+        - Tasks
+      summary: Get task by ID
+      description: Retrieve a specific task by its ID
+      operationId: getTaskById
+      parameters:
+        - $ref: '#/components/parameters/TaskId'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/Task'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    put:
+      tags:
+        - Tasks
+      summary: Update a task
+      description: Update one or more fields of an existing task
+      operationId: updateTask
+      parameters:
+        - $ref: '#/components/parameters/TaskId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateTaskRequest'
+            examples:
+              statusOnly:
+                summary: Update status only
+                value:
+                  status: COMPLETED
+              full:
+                summary: Update all fields
+                value:
+                  title: Updated task title
+                  description: Updated description
+                  status: IN_PROGRESS
+      responses:
+        '200':
+          description: Task updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  data:
+                    $ref: '#/components/schemas/Task'
+                  message:
+                    type: string
+                    example: Task updated successfully
+        '400':
+          $ref: '#/components/responses/ValidationError'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+    delete:
+      tags:
+        - Tasks
+      summary: Delete a task
+      description: Permanently delete a task by ID
+      operationId: deleteTask
+      parameters:
+        - $ref: '#/components/parameters/TaskId'
+      responses:
+        '200':
+          description: Task deleted successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: Task deleted successfully
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+components:
+  schemas:
+    Task:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: objectId
+          example: 507f1f77bcf86cd799439011
+        title:
+          type: string
+          minLength: 1
+          maxLength: 100
+          example: Complete project documentation
+        description:
+          type: string
+          minLength: 1
+          maxLength: 500
+          example: Write comprehensive README and API documentation for the Task Manager API
+        status:
+          type: string
+          enum:
+            - TODO
+            - IN_PROGRESS
+            - COMPLETED
+          example: TODO
+        createdAt:
+          type: string
+          format: date-time
+          example: 2024-01-15T10:00:00.000Z
+        updatedAt:
+          type: string
+          format: date-time
+          example: 2024-01-15T10:00:00.000Z
+      required:
+        - _id
+        - title
+        - description
+        - status
+        - createdAt
+        - updatedAt
+
+    CreateTaskRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 100
+          example: Complete project documentation
+        description:
+          type: string
+          minLength: 1
+          maxLength: 500
+          example: Write comprehensive README and API documentation
+        status:
+          type: string
+          enum:
+            - TODO
+            - IN_PROGRESS
+            - COMPLETED
+          default: TODO
+          example: TODO
+      required:
+        - title
+        - description
+
+    UpdateTaskRequest:
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+          maxLength: 100
+          example: Updated task title
+        description:
+          type: string
+          minLength: 1
+          maxLength: 500
+          example: Updated task description
+        status:
+          type: string
+          enum:
+            - TODO
+            - IN_PROGRESS
+            - COMPLETED
+          example: IN_PROGRESS
+      minProperties: 1
+
+    Error:
+      type: object
+      properties:
+        success:
+          type: boolean
+          example: false
+        message:
+          type: string
+          example: Error message
+        statusCode:
+          type: integer
+          example: 400
+        stack:
+          type: string
+          description: Stack trace (only in development)
+          example: Error stack trace...
+
+  parameters:
+    TaskId:
+      name: id
+      in: path
+      required: true
+      description: MongoDB ObjectId of the task
+      schema:
+        type: string
+        format: objectId
+        example: 507f1f77bcf86cd799439011
+
+  responses:
+    ValidationError:
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            success: false
+            message: Validation failed
+            statusCode: 400
+
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            success: false
+            message: Invalid ID format
+            statusCode: 400
+
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            success: false
+            message: Task with id 507f1f77bcf86cd799439011 not found
+            statusCode: 404
+
+    InternalServerError:
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            success: false
+            message: Internal server error
+            statusCode: 500

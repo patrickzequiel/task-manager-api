@@ -1,55 +1,168 @@
-# 🚀 Awesome Project README 🚀
+# Task Manager API
 
-Welcome to our fantastic project! We're so glad you're here. 😄
+Production-ready RESTful API built with Node.js, Express, TypeScript, and MongoDB.
 
-## What is this project all about?
+## Tech Stack
 
-This project is all about making your coding life easier and more enjoyable. It's designed to help you work with the awesome ESLint and Prettier tools to ensure your code is clean, consistent, and beautiful! 🌟
+- **Node.js** + **Express** - Server framework
+- **TypeScript** - Type safety
+- **MongoDB** + **Mongoose** - Database
+- **Zod** - Request validation
+- **Winston** - Logging
+- **Helmet** - Security
 
-## Getting Started
+## Architecture
 
-Let's get you up and running in no time! 🏃
+Clean layered architecture with functional programming (no classes):
 
-### Installation
+```
+routes → controllers → services → repositories → models → database
+```
 
-First, make sure you have either [npm](https://www.npmjs.com/) or [Yarn](https://classic.yarnpkg.com/) installed.
+## Quick Start
 
-- To install using npm:
-  ```bash
-  npm install eslint eslint-config-prettier prettier --save-dev
-Or, if you prefer Yarn:
-bash
-Copy code
-yarn add eslint eslint-config-prettier prettier --dev
-Now you're all set with ESLint and Prettier! 🎉
+```bash
+# Install
+npm install
 
-Initializing ESLint
-To set up ESLint, run the following command:
+# Setup environment
+cp .env.example .env
+# Add your MongoDB URL to .env
 
-bash
-Copy code
-npx eslint --init
-Follow the prompts, and you'll be ready to rock with your code linting and formatting! 🧹
+# Development
+npm run start:dev
 
-How to Contribute
-We're super excited to have you contribute to this project! Whether it's fixing a bug, adding a feature, or suggesting improvements, your input is highly valued. 🙌
+# Production
+npm run build
+npm start
+```
 
-Fork this repository
-Create a new branch for your feature/fix: git checkout -b feature/awesome-feature
-Make your changes
-Commit your changes: git commit -m 'Added an awesome feature'
-Push to the branch: git push origin feature/awesome-feature
-Create a Pull Request
-Sit back, relax, and let's make the code even more amazing together! 🎈
-Reporting Issues
-If you run into any problems or have suggestions, please don't hesitate to create an issue. We're here to help you out and make the project better! 🐛
+## API Endpoints
 
-Thanks for Being Awesome! 🌈
-Thank you for choosing our project. We hope you enjoy coding with ESLint and Prettier, and remember to have fun while you're at it. You're amazing! 😊
+**Base URL:** `http://localhost:3000/api`
 
-License
-This project is licensed under the MIT License. See the LICENSE file for details. Feel free to use, share, and contribute. Cheers! 🍻
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/health` | Health check |
+| GET | `/tasks` | Get all tasks |
+| GET | `/tasks/stats` | Get statistics |
+| GET | `/tasks/:id` | Get task by ID |
+| POST | `/tasks` | Create task |
+| PUT | `/tasks/:id` | Update task |
+| DELETE | `/tasks/:id` | Delete task |
 
+## Task Model
 
+```typescript
+{
+  title: string           // Required, max 100 chars
+  description: string     // Required, max 500 chars
+  status: 'TODO' | 'IN_PROGRESS' | 'COMPLETED'  // Default: TODO
+  createdAt: Date
+  updatedAt: Date
+}
+```
 
+## Examples
 
+### Create Task
+```bash
+curl -X POST http://localhost:3000/api/tasks \
+  -H "Content-Type: application/json" \
+  -d '{"title": "My Task", "description": "Do something"}'
+```
+
+### Get All Tasks
+```bash
+curl http://localhost:3000/api/tasks
+```
+
+### Update Task
+```bash
+curl -X PUT http://localhost:3000/api/tasks/{id} \
+  -H "Content-Type: application/json" \
+  -d '{"status": "COMPLETED"}'
+```
+
+## Testing
+
+### Postman
+Import `postman_collection.json` - includes 15+ pre-configured requests with examples.
+
+### Swagger
+View `swagger.yaml` at [editor.swagger.io](https://editor.swagger.io) for interactive API docs.
+
+## Environment Variables
+
+```env
+PORT=3000
+NODE_ENV=development
+MONGO_URL=your_mongodb_connection_string
+CORS_ORIGIN=*
+```
+
+## Scripts
+
+```bash
+npm run start:dev    # Development with hot reload
+npm run build        # Build TypeScript
+npm start            # Production server
+npm test             # Run tests
+npm run lint:fix     # Fix linting
+npm run format:write # Format code
+```
+
+## Deployment
+
+### Render
+
+1. Push to GitHub
+2. Connect repository in Render
+3. Set environment variables
+4. Deploy automatically on push
+
+### CI/CD
+
+GitHub Actions workflow included for:
+- ✅ Linting
+- ✅ Type checking
+- ✅ Tests
+- ✅ Auto-deploy to Render
+
+See `.github/workflows/ci-cd.yml`
+
+## TODOs
+
+Future enhancements are marked with `// TODO:` comments in the code.
+
+View all TODOs:
+```bash
+grep -r "TODO:" src/
+```
+
+Priority TODOs:
+- JWT authentication
+- Pagination & filtering
+- Rate limiting
+- Redis caching
+- Swagger UI integration
+
+## Project Structure
+
+```
+src/
+├── config/         # Environment setup
+├── database/       # DB connection
+├── models/         # Mongoose schemas
+├── repositories/   # Data access
+├── services/       # Business logic
+├── controllers/    # HTTP handlers
+├── middlewares/    # Validation, errors, logging
+├── routes/         # API routes
+├── utils/          # Logger, errors
+└── types/          # TypeScript types
+```
+
+## License
+
+MIT

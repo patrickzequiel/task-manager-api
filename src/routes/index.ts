@@ -1,17 +1,34 @@
-import { Router } from 'express'
+import { Router, Request, Response } from 'express'
+import taskRoutes from './tasks'
+import { config } from '../config/environment'
+
+// TODO: Add API versioning (v1, v2)
+// TODO: Add Swagger/OpenAPI documentation endpoint
+// TODO: Add metrics endpoint for monitoring
 
 const router = Router()
 
-import tasks from './tasks'
-
-const port = process.env.PORT || 3000
-
-router.get('/', (req: any, res: any) => {
-    res.json({
-        task: `http://localhost:${port}/task`,
+router.get('/', (req: Request, res: Response) => {
+    res.status(200).json({
+        success: true,
+        message: 'Task Manager API',
+        version: '1.0.0',
+        endpoints: {
+            tasks: '/api/tasks',
+            health: '/api/health',
+        },
     })
 })
 
-router.use('/tasks', tasks)
+router.get('/health', (req: Request, res: Response) => {
+    res.status(200).json({
+        success: true,
+        status: 'UP',
+        timestamp: new Date().toISOString(),
+        environment: config.nodeEnv,
+    })
+})
+
+router.use('/tasks', taskRoutes)
 
 export default router
