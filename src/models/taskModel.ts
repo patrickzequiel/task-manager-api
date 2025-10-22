@@ -1,12 +1,20 @@
 import mongoose, { Schema, Model } from 'mongoose'
-import { ITaskDocument, TaskStatus } from '../types/task'
+import { TaskStatus } from '../types/taskTypes'
 
-// TODO: Add compound indexes for common queries
-// TODO: Add soft delete support (deletedAt field)
-// TODO: Add task priority field (low, medium, high)
-// TODO: Add due date field with reminders
+// ⚠️ DEPRECATED: This model is no longer used.
+// Tasks are now embedded within the User model.
+// This file is kept for reference and potential data migration.
+// TODO: Remove this file after migrating existing task data to user documents
 
-const taskSchema = new Schema<ITaskDocument>(
+interface ITaskDocument extends mongoose.Document {
+    title: string
+    description: string
+    status: TaskStatus
+    createdAt?: Date
+    updatedAt?: Date
+}
+
+export const taskSchema = new Schema<ITaskDocument>(
     {
         title: {
             type: String,

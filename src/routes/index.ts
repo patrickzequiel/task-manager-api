@@ -1,6 +1,8 @@
 import { Router, Request, Response } from 'express'
-import taskRoutes from './tasks'
+import taskRoutes from './taskRoutes';
+import userRoutes from './userRoutes';
 import { config } from '../config/environment'
+import { authenticate } from '../middlewares/authenticate';
 
 // TODO: Add API versioning (v1, v2)
 // TODO: Add Swagger/OpenAPI documentation endpoint
@@ -8,7 +10,7 @@ import { config } from '../config/environment'
 
 const router = Router()
 
-router.get('/', (req: Request, res: Response) => {
+router.get('/', (_req: Request, res: Response) => {
     res.status(200).json({
         success: true,
         message: 'Task Manager API',
@@ -20,7 +22,7 @@ router.get('/', (req: Request, res: Response) => {
     })
 })
 
-router.get('/health', (req: Request, res: Response) => {
+router.get('/health', (_req: Request, res: Response) => {
     res.status(200).json({
         success: true,
         status: 'UP',
@@ -30,5 +32,8 @@ router.get('/health', (req: Request, res: Response) => {
 })
 
 router.use('/tasks', taskRoutes)
+
+router.use('/user', userRoutes)
+
 
 export default router

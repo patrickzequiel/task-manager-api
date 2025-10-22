@@ -12,6 +12,7 @@ interface EnvironmentConfig {
     nodeEnv: string
     mongoUrl: string
     corsOrigin: string
+    jwtSecret: string
 }
 
 const getEnvironmentConfig = (): EnvironmentConfig => {
@@ -28,6 +29,7 @@ const getEnvironmentConfig = (): EnvironmentConfig => {
         nodeEnv: process.env.NODE_ENV || 'development',
         mongoUrl: process.env.MONGO_URL!,
         corsOrigin: process.env.CORS_ORIGIN || '*',
+        jwtSecret: process.env.JWT_SECRET || '',
     }
 }
 

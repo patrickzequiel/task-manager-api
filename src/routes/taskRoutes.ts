@@ -1,11 +1,9 @@
 import { Router } from 'express'
-import * as taskController from '../controllers/task'
+import * as taskController from '../controllers/taskController'
 import {
-    validate,
-    createTaskSchema,
-    updateTaskSchema,
-    taskIdSchema,
+    validate
 } from '../middlewares/validation'
+import { createTaskSchema, taskIdSchema, updateTaskSchema } from '../validations/taskValidation'
 
 // TODO: Add authentication middleware
 // TODO: Add rate limiting middleware

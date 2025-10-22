@@ -4,10 +4,35 @@
         {
             "type": "node",
             "request": "launch",
-            "name": "Iniciar o Programa",
+            "name": "Debug with ts-node",
             "skipFiles": ["<node_internals>/**"],
-            "program": "${workspaceFolder}/dist/index.js",
-            "preLaunchTask": "yarn start:dev"
+            "runtimeExecutable": "${env:HOME}/.nvm/versions/node/v22.20.0/bin/node",
+            "runtimeArgs": ["-r", "ts-node/register"],
+            "args": ["${workspaceFolder}/src/server.ts"],
+            "env": {
+                "NODE_ENV": "development"
+            },
+            "console": "integratedTerminal",
+            "internalConsoleOptions": "neverOpen"
+        },
+        {
+            "type": "node",
+            "request": "attach",
+            "name": "Attach to Nodemon",
+            "processId": "${command:PickProcess}",
+            "restart": true,
+            "skipFiles": ["<node_internals>/**"]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Debug Built App",
+            "skipFiles": ["<node_internals>/**"],
+            "runtimeExecutable": "${env:HOME}/.nvm/versions/node/v22.20.0/bin/node",
+            "program": "${workspaceFolder}/dist/server.js",
+            "preLaunchTask": "tsc: build - tsconfig.json",
+            "outFiles": ["${workspaceFolder}/dist/**/*.js"],
+            "sourceMaps": true
         }
     ]
 }

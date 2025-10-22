@@ -1,4 +1,4 @@
-import { Document, Types } from 'mongoose'
+import { Types } from 'mongoose'
 
 export enum TaskStatus {
     TODO = 'TODO',
@@ -6,16 +6,14 @@ export enum TaskStatus {
     COMPLETED = 'COMPLETED',
 }
 
+// Task as embedded subdocument (no longer a separate collection)
 export interface ITask {
+    _id?: Types.ObjectId
     title: string
     description: string
     status: TaskStatus
     createdAt?: Date
     updatedAt?: Date
-}
-
-export interface ITaskDocument extends ITask, Document {
-    _id: Types.ObjectId
 }
 
 export interface ICreateTaskDTO {

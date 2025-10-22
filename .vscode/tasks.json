@@ -3,10 +3,27 @@
     "tasks": [
         {
             "type": "shell",
-            "command": "yarn start:dev",
+            "command": "source ~/.nvm/nvm.sh && nvm use 22 && yarn start:dev",
             "problemMatcher": [],
             "label": "Yarn: start:dev",
             "detail": "npx nodemon"
+        },
+        {
+            "type": "typescript",
+            "tsconfig": "tsconfig.json",
+            "problemMatcher": [
+                "$tsc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "label": "tsc: build - tsconfig.json",
+            "options": {
+                "env": {
+                    "PATH": "${env:HOME}/.nvm/versions/node/v22.20.0/bin:${env:PATH}"
+                }
+            }
         }
     ]
 }

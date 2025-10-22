@@ -1,9 +1,9 @@
-import TaskService from '../services/task.service'
-import TaskRepository from '../repositories/task.repository'
+import TaskService from '../services/taskService'
+import TaskRepository from '../repositories/taskRepository'
 import { NotFoundError, ValidationError } from '../utils/errors'
-import { TaskStatus } from '../types/task.interface'
+import { TaskStatus } from '../types/taskTypes'
 
-jest.mock('../repositories/task.repository')
+jest.mock('../repositories/taskRepository')
 
 describe('TaskService', () => {
     let taskService: TaskService
